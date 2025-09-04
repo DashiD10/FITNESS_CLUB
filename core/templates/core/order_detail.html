@@ -10,7 +10,15 @@
         <div class="card-body">
             <h5 class="card-title">Заявка #{{ order.id }}</h5>
             <p class="card-text"><strong>Имя клиента:</strong> {{ order.client_name }}</p>
-            <p class="card-text"><strong>Статус:</strong> {{ order.status }}</p>
+            <p class="card-text"><strong>Дата:</strong> {{ order.date }}</p>
+            <p class="card-text"><strong>Услуги:</strong> {{ order.services }}</p>
+            <p class="card-text"><strong>Тренер:</strong> {{ order.trainer_name }}</p>
+            <p class="card-text">
+                <strong>Статус:</strong>
+                <span class="badge {% if order.status == 'Новая' %}bg-warning{% elif order.status == 'Подтвержденная' %}bg-primary{% else %}bg-secondary{% endif %}">
+                    {{ order.status }}
+                </span>
+            </p>
             <p class="card-text"><strong>Детали:</strong> {{ order.details }}</p>
         </div>
     </div>

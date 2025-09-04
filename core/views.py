@@ -20,8 +20,8 @@ def order_detail(request, order_id):
         return redirect('landing')
     # Mock order data for demonstration
     orders = {
-        1: {"client_name": "Иван Иванов", "status": "В обработке", "details": "Заказ на фитнес тренировки"},
-        2: {"client_name": "Мария Петрова", "status": "Завершен", "details": "Заказ на йогу"},
+        1: {"id": 1, "client_name": "Иван Иванов", "date": "2023-10-01", "services": "Фитнес тренировки", "trainer_name": "Алексей Сидоров", "status": "Новая", "details": "Заказ на фитнес тренировки"},
+        2: {"id": 2, "client_name": "Мария Петрова", "date": "2023-10-02", "services": "Йога", "trainer_name": "Елена Кузнецова", "status": "Подтвержденная", "details": "Заказ на йогу"},
     }
     order = orders.get(order_id)
     if not order:
@@ -39,8 +39,8 @@ def orders_list(request):
         return redirect('landing')
     # Mock orders data for demonstration
     orders = [
-        {"id": 1, "client_name": "Иван Иванов", "status": "В обработке"},
-        {"id": 2, "client_name": "Мария Петрова", "status": "Завершен"},
+        {"id": 1, "client_name": "Иван Иванов", "date": "2023-10-01", "services": "Фитнес тренировки", "trainer_name": "Алексей Сидоров", "status": "Новая"},
+        {"id": 2, "client_name": "Мария Петрова", "date": "2023-10-02", "services": "Йога", "trainer_name": "Елена Кузнецова", "status": "Подтвержденная"},
     ]
     return render(request, "core/orders_list.html", {"orders": orders})
 
