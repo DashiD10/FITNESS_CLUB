@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Детали заявки</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'main.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Детали заявки</h1>
+    </header>
+    <main>
+        {% if order %}
+        <p><strong>Имя клиента:</strong> {{ order.client_name }}</p>
+        <p><strong>Статус:</strong> {{ order.status }}</p>
+        <p><strong>Детали:</strong> {{ order.details }}</p>
+        {% else %}
+        <p>Заявка не найдена.</p>
+        {% endif %}
+        <a href="{% url 'orders_list' %}">Вернуться к списку</a>
+    </main>
+    <footer>
+        <p>&copy; 2023 Fitness Club</p>
+    </footer>
+    <script src="{% static 'main.js' %}"></script>
+</body>
+</html>
