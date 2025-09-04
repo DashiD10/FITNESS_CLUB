@@ -1,22 +1,47 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Fitness Club - Landing Page</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'main.css' %}">
-</head>
-<body>
-    <header>
-        <h1>Добро пожаловать в фитнес-клуб "IRON MAN"</h1>
-    </header>
-    <main>
-        <p>Это главная страница нашего фитнес-клуба.</p>
-        <p>Здесь вы можете найти информацию о наших тренировках и фитнес-тренерах.</p>
-    </main>
-    <footer>
-        <p>&copy; 2025 Фитнес клуб "IRON MAN"</p>
-    </footer>
-    <script src="{% static 'main.js' %}"></script>
-</body>
-</html>
+{% extends 'core/base.html' %}
+
+{% block title %}Главная - Фитнес-клуб «IRON MAN»{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <section id="hero" class="text-center py-5">
+        <h1 class="display-4">Добро пожаловать в фитнес-клуб "IRON MAN"</h1>
+        <p class="lead">Ваш путь к здоровью, силе и отличной форме!</p>
+        <a href="#booking" class="btn btn-primary btn-lg">Записаться</a>
+    </section>
+
+    <section id="about" class="py-5">
+        <h2>О нас</h2>
+        <p>Фитнес-клуб "IRON MAN" предлагает широкий спектр услуг для поддержания здоровья и достижения ваших фитнес-целей. Наши опытные тренеры помогут вам в этом.</p>
+    </section>
+
+    <section id="services" class="py-5">
+        <h2>Услуги</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <h3>Тренировки</h3>
+                <p>Индивидуальные и групповые тренировки по различным направлениям.</p>
+            </div>
+            <div class="col-md-4">
+                <h3>Йога</h3>
+                <p>Занятия йогой для расслабления и гибкости.</p>
+            </div>
+            <div class="col-md-4">
+                <h3>Кардио</h3>
+                <p>Кардиотренировки для улучшения выносливости.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="trainers" class="py-5">
+        <h2>Тренеры</h2>
+        <p>Наши сертифицированные тренеры готовы помочь вам достичь ваших целей.</p>
+    </section>
+
+    <section id="booking" class="py-5">
+        <h2>Запись</h2>
+        <p>Запишитесь на тренировку прямо сейчас!</p>
+        <a href="{% url 'thanks' %}" class="btn btn-success">Подать заявку</a>
+    </section>
+</div>
+{% endblock %}

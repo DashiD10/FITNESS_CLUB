@@ -1,21 +1,27 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Спасибо!</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'main.css' %}">
-</head>
-<body>
-    <header>
-        <h1>Спасибо за вашу запись!</h1>
-    </header>
-    <main>
-        <p>Ваша заявка принята. Мы свяжемся с вами в ближайшее время.</p>
-    </main>
-    <footer>
-        <p>&copy; 2023 Fitness Club</p>
-    </footer>
-    <script src="{% static 'main.js' %}"></script>
-</body>
-</html>
+{% extends 'core/base.html' %}
+
+{% block title %}Спасибо за заявку - Фитнес-клуб «IRON MAN»{% endblock %}
+
+{% block content %}
+<div class="container my-5 text-center">
+    <h1 class="display-4 text-success">Спасибо за вашу запись!</h1>
+    <p class="lead">Ваша заявка принята. Мы свяжемся с вами в ближайшее время.</p>
+    <p id="countdown">Перенаправление на главную страницу через <span id="timer">5</span> секунд...</p>
+    <a href="{% url 'landing' %}" class="btn btn-primary">Вернуться на главную</a>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let timer = 5;
+    const countdownElement = document.getElementById('timer');
+    const interval = setInterval(() => {
+        timer--;
+        countdownElement.textContent = timer;
+        if (timer <= 0) {
+            clearInterval(interval);
+            window.location.href = "{% url 'landing' %}";
+        }
+    }, 1000);
+</script>
+{% endblock %}

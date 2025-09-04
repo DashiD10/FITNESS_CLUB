@@ -1,28 +1,24 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Детали заявки</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'main.css' %}">
-</head>
-<body>
-    <header>
-        <h1>Детали заявки</h1>
-    </header>
-    <main>
-        {% if order %}
-        <p><strong>Имя клиента:</strong> {{ order.client_name }}</p>
-        <p><strong>Статус:</strong> {{ order.status }}</p>
-        <p><strong>Детали:</strong> {{ order.details }}</p>
-        {% else %}
+{% extends 'core/base.html' %}
+
+{% block title %}Детали заявки - Фитнес-клуб «IRON MAN»{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h1>Детали заявки</h1>
+    {% if order %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Заявка #{{ order.id }}</h5>
+            <p class="card-text"><strong>Имя клиента:</strong> {{ order.client_name }}</p>
+            <p class="card-text"><strong>Статус:</strong> {{ order.status }}</p>
+            <p class="card-text"><strong>Детали:</strong> {{ order.details }}</p>
+        </div>
+    </div>
+    {% else %}
+    <div class="alert alert-warning">
         <p>Заявка не найдена.</p>
-        {% endif %}
-        <a href="{% url 'orders_list' %}">Вернуться к списку</a>
-    </main>
-    <footer>
-        <p>&copy; 2023 Fitness Club</p>
-    </footer>
-    <script src="{% static 'main.js' %}"></script>
-</body>
-</html>
+    </div>
+    {% endif %}
+    <a href="{% url 'orders_list' %}" class="btn btn-secondary mt-3">Вернуться к списку</a>
+</div>
+{% endblock %}
