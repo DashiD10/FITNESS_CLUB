@@ -98,11 +98,11 @@ class Order(models.Model):
     appointment_date = models.DateTimeField(verbose_name="Дата и время записи")
 
     def __str__(self) -> str:
-        return f"Заказ от {self.name}"
+        return f"Запись от {self.name}"
 
     class Meta:
-        verbose_name = "Заказ"
-        verbose_name_plural = "Заказы"
+        verbose_name = "Запись"
+        verbose_name_plural = "Записи"
 
 
 class Review(models.Model):
