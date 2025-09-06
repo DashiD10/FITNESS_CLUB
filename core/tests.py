@@ -35,7 +35,7 @@ class ServiceModelTest(TestCase):
 
     def test_service_blank_image(self):
         service = Service.objects.create(**self.service_data)
-        self.assertEqual(service.image.name, '')
+        self.assertIsNone(service.image.name)
 
 
 class TrainerModelTest(TestCase):
@@ -194,7 +194,7 @@ class ModelRelationshipsTest(TestCase):
         self.assertEqual(self.service.orders.count(), 1)
         self.assertIn(order, self.service.orders.all())
 
-    def test_review_trainer_cascade_delete(self):
+    def test_review_trainer_set_null_on_delete(self):
         review = Review.objects.create(
             text='Хороший тренер',
             trainer=self.trainer,
@@ -202,8 +202,8 @@ class ModelRelationshipsTest(TestCase):
         )
         trainer_id = self.trainer.id
         self.trainer.delete()
-        with self.assertRaises(Review.DoesNotExist):
-            Review.objects.get(id=review.id)
+        review.refresh_from_db()
+        self.assertIsNone(review.trainer)
 
     def test_order_trainer_set_null_on_delete(self):
         order = Order.objects.create(
