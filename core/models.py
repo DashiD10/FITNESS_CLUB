@@ -32,15 +32,15 @@ class Service(models.Model):
     description = models.TextField(blank=True, verbose_name="Описание")
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Цена")
     duration = models.PositiveIntegerField(verbose_name="Длительность", help_text="Время тренировки")
-    is_popular = models.BooleanField(default=False, verbose_name="Популярная услуга")
+    is_popular = models.BooleanField(default=False, verbose_name="Популярная программа тренировок")
     image = models.ImageField(upload_to="services/", blank=True, null=True, verbose_name="Изображение")
 
     def __str__(self) -> str:
         return self.name
 
     class Meta:
-        verbose_name = "Услуга"
-        verbose_name_plural = "Услуги"
+        verbose_name = "Программа тренировок"
+        verbose_name_plural = "Программы тренировок"
 
 
 class Trainer(models.Model):
@@ -61,7 +61,7 @@ class Trainer(models.Model):
     phone = models.CharField(max_length=20, verbose_name="Телефон")
     address = models.CharField(max_length=255, verbose_name="Адрес")
     experience = models.PositiveIntegerField(verbose_name="Стаж работы", help_text="Опыт работы в годах")
-    services = models.ManyToManyField(Service, related_name="trainers", verbose_name="Услуги")
+    services = models.ManyToManyField(Service, related_name="trainers", verbose_name="Тренировки")
     is_active = models.BooleanField(default=True, verbose_name="Активен")
 
     def __str__(self) -> str:
@@ -94,7 +94,7 @@ class Order(models.Model):
     date_created = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     date_updated = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
     trainer = models.ForeignKey(Trainer, on_delete=models.SET_NULL, null=True, related_name="orders", verbose_name="Тренер")
-    services = models.ManyToManyField(Service, related_name="orders", verbose_name="Услуги")
+    services = models.ManyToManyField(Service, related_name="orders", verbose_name="Тренировки")
     appointment_date = models.DateTimeField(verbose_name="Дата и время записи")
 
     def __str__(self) -> str:
