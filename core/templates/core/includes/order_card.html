@@ -1,14 +1,14 @@
 <div class="col-md-4 mb-4">
     <div class="card h-100">
         <div class="card-body">
-            <h5 class="card-title">{{ order.client_name }}</h5>
-            <p class="card-text"><strong>Дата:</strong> {{ order.date }}</p>
-            <p class="card-text"><strong>Услуги:</strong> {{ order.services }}</p>
-            <p class="card-text"><strong>Тренер:</strong> {{ order.trainer_name }}</p>
+            <h5 class="card-title">{{ order.name }}</h5>
+            <p class="card-text"><strong>Дата:</strong> {{ order.appointment_date|date:"d.m.Y H:i" }}</p>
+            <p class="card-text"><strong>Услуги:</strong> {% for service in order.services.all %}{{ service.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+            <p class="card-text"><strong>Тренер:</strong> {% if order.trainer %}{{ order.trainer.name }}{% else %}Не назначен{% endif %}</p>
             <p class="card-text">
                 <strong>Статус:</strong>
-                <span class="badge {% if order.status == 'Новая' %}bg-warning{% elif order.status == 'Подтвержденная' %}bg-primary{% else %}bg-secondary{% endif %}">
-                    {{ order.status }}
+                <span class="badge {% if order.status == 'not_approved' %}bg-warning{% elif order.status == 'approved' %}bg-primary{% elif order.status == 'completed' %}bg-success{% else %}bg-secondary{% endif %}">
+                    {{ order.get_status_display }}
                 </span>
             </p>
             <a href="{% url 'order_detail' order.id %}" class="btn btn-primary">Подробнее</a>

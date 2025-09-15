@@ -1,12 +1,17 @@
-from django.shortcuts import render, redirect
-from django.shortcuts import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from .models import Trainer, Review, Order
 
 def landing(request):
     """Обработчик главной страницы"""
-    # Optionally, add masters and services data here if available
-    return render(request, "core/landing.html")
+    trainers = Trainer.objects.filter(is_active=True)
+    reviews = Review.objects.filter(is_published=True)
+    context = {
+        'trainers': trainers,
+        'reviews': reviews,
+    }
+    return render(request, "core/landing.html", context)
 
 @login_required
 def order_detail(request, order_id):
@@ -15,17 +20,7 @@ def order_detail(request, order_id):
     :param request: HttpRequest
     :param order_id: int (номер заказа)
     """
-    if not request.user.is_staff:
-        messages.error(request, "У вас нет прав для просмотра этой страницы.")
-        return redirect('landing')
-    # Mock order data for demonstration
-    orders = {
-        1: {"id": 1, "client_name": "Иван Иванов", "date": "2023-10-01", "services": "Фитнес тренировки", "trainer_name": "Алексей Сидоров", "status": "Новая", "details": "Заказ на фитнес тренировки"},
-        2: {"id": 2, "client_name": "Мария Петрова", "date": "2023-10-02", "services": "Йога", "trainer_name": "Елена Кузнецова", "status": "Подтвержденная", "details": "Заказ на йогу"},
-    }
-    order = orders.get(order_id)
-    if not order:
-        return HttpResponse(f"<h1>Заказ с ID {order_id} не найден</h1>", status=404)
+    order = get_object_or_404(Order, pk=order_id)
     return render(request, "core/order_detail.html", {"order": order})
 
 @login_required
@@ -34,14 +29,7 @@ def orders_list(request):
     Отвечает за маршрут 'orders/'
     :param request: HttpRequest
     """
-    if not request.user.is_staff:
-        messages.error(request, "У вас нет прав для просмотра этой страницы.")
-        return redirect('landing')
-    # Mock orders data for demonstration
-    orders = [
-        {"id": 1, "client_name": "Иван Иванов", "date": "2023-10-01", "services": "Фитнес тренировки", "trainer_name": "Алексей Сидоров", "status": "Новая"},
-        {"id": 2, "client_name": "Мария Петрова", "date": "2023-10-02", "services": "Йога", "trainer_name": "Елена Кузнецова", "status": "Подтвержденная"},
-    ]
+    orders = Order.objects.all().order_by('-date_created')
     return render(request, "core/orders_list.html", {"orders": orders})
 
 def thanks(request):

@@ -5,28 +5,35 @@
 {% block content %}
 <div class="container my-5">
     <h1>Детали заявки</h1>
-    {% if order %}
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">Заявка #{{ order.id }}</h5>
-            <p class="card-text"><strong>Имя клиента:</strong> {{ order.client_name }}</p>
-            <p class="card-text"><strong>Дата:</strong> {{ order.date }}</p>
-            <p class="card-text"><strong>Услуги:</strong> {{ order.services }}</p>
-            <p class="card-text"><strong>Тренер:</strong> {{ order.trainer_name }}</p>
+            <p class="card-text"><strong>Имя клиента:</strong> {{ order.name }}</p>
+            <p class="card-text"><strong>Телефон:</strong> {{ order.phone }}</p>
+            <p class="card-text"><strong>Дата записи:</strong> {{ order.appointment_date|date:"d.m.Y H:i" }}</p>
+            <p class="card-text"><strong>Услуги:</strong>
+                <ul>
+                    {% for service in order.services.all %}
+                    <li>{{ service.name }} ({{ service.duration }} мин, {{ service.price }} руб)</li>
+                    {% empty %}
+                    <li>Услуги не выбраны</li>
+                    {% endfor %}
+                </ul>
+            </p>
+            <p class="card-text"><strong>Тренер:</strong> {{ order.trainer.name if order.trainer else "Не назначен" }}</p>
             <p class="card-text">
                 <strong>Статус:</strong>
-                <span class="badge {% if order.status == 'Новая' %}bg-warning{% elif order.status == 'Подтвержденная' %}bg-primary{% else %}bg-secondary{% endif %}">
-                    {{ order.status }}
+                <span class="badge {% if order.status == 'not_approved' %}bg-warning{% elif order.status == 'approved' %}bg-primary{% elif order.status == 'completed' %}bg-success{% else %}bg-secondary{% endif %}">
+                    {{ order.get_status_display }}
                 </span>
             </p>
-            <p class="card-text"><strong>Детали:</strong> {{ order.details }}</p>
+            {% if order.comment %}
+            <p class="card-text"><strong>Комментарий:</strong> {{ order.comment }}</p>
+            {% endif %}
+            <p class="card-text"><strong>Дата создания:</strong> {{ order.date_created|date:"d.m.Y H:i" }}</p>
+            <p class="card-text"><strong>Дата обновления:</strong> {{ order.date_updated|date:"d.m.Y H:i" }}</p>
         </div>
     </div>
-    {% else %}
-    <div class="alert alert-warning">
-        <p>Заявка не найдена.</p>
-    </div>
-    {% endif %}
     <a href="{% url 'orders_list' %}" class="btn btn-secondary mt-3">Вернуться к списку</a>
 </div>
 {% endblock %}

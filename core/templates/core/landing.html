@@ -16,30 +16,61 @@
     </section>
 
     <section id="services" class="py-5">
-        <h2>Услуги</h2>
+        <h2>Программы тренировок</h2>
         <div class="row">
             <div class="col-md-4">
-                <h3>Тренировки</h3>
                 <p>Индивидуальные и групповые тренировки по различным направлениям.</p>
-            </div>
-            <div class="col-md-4">
-                <h3>Йога</h3>
-                <p>Занятия йогой для расслабления и гибкости.</p>
-            </div>
-            <div class="col-md-4">
-                <h3>Кардио</h3>
-                <p>Кардиотренировки для улучшения выносливости.</p>
             </div>
         </div>
     </section>
 
     <section id="trainers" class="py-5">
         <h2>Тренеры</h2>
-        <p>Наши сертифицированные тренеры готовы помочь вам достичь ваших целей.</p>
+        <div class="row">
+            {% for trainer in trainers %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    {% if trainer.photo %}
+                    <img src="{{ trainer.photo.url }}" class="card-img-top" alt="{{ trainer.name }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ trainer.name }}</h5>
+                        <p class="card-text">Стаж: {{ trainer.experience }} лет</p>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p>Тренеры пока не добавлены.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section id="reviews" class="py-5">
+        <h2>Отзывы</h2>
+        <div class="row">
+            {% for review in reviews %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ review.client_name|default:"Аноним" }}</h5>
+                        <p class="card-text">{{ review.text }}</p>
+                        <p class="card-text">
+                            <strong>Оценка:</strong>
+                            {% for i in "12345"|make_list %}
+                            <i class="bi {% if forloop.counter <= review.rating %}bi-star-fill{% else %}bi-star{% endif %}"></i>
+                            {% endfor %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p>Отзывы пока не добавлены.</p>
+            {% endfor %}
+        </div>
     </section>
 
     <section id="booking" class="py-5">
-        <h2>Запись</h2>
+        <h2>Записаться</h2>
         <p>Запишитесь на тренировку прямо сейчас!</p>
         <a href="{% url 'thanks' %}" class="btn btn-success">Записаться</a>
     </section>

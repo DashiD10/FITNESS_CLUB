@@ -4,6 +4,8 @@ from django.db import IntegrityError
 from datetime import datetime, timedelta
 from decimal import Decimal
 from core.models import Service, Trainer, Order, Review, STATUS_CHOICES, RATING_CHOICES
+from django.urls import reverse
+from django.contrib.auth.models import User
 
 
 class ServiceModelTest(TestCase):
@@ -215,3 +217,73 @@ class ModelRelationshipsTest(TestCase):
         self.trainer.delete()
         order.refresh_from_db()
         self.assertIsNone(order.trainer)
+
+
+class ViewTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='testpass')
+        self.trainer = Trainer.objects.create(
+            name='Тест Тренер',
+            phone='+70000000000',
+            address='Тестовый адрес',
+            experience=10,
+            is_active=True
+        )
+        self.review = Review.objects.create(
+            text='Отличный тренер',
+            client_name='Клиент',
+            trainer=self.trainer,
+            rating=5,
+            is_published=True
+        )
+        self.service = Service.objects.create(
+            name='Тестовая услуга',
+            price=1000,
+            duration=60
+        )
+        self.order = Order.objects.create(
+            name='Клиент Заказ',
+            phone='+70000000001',
+            appointment_date=datetime.now(),
+            trainer=self.trainer,
+            status='approved'
+        )
+        self.order.services.add(self.service)
+
+    def test_landing_view(self):
+        response = self.client.get(reverse('landing'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'core/landing.html')
+        self.assertIn('trainers', response.context)
+        self.assertIn('reviews', response.context)
+        self.assertTrue(len(response.context['trainers']) > 0)
+        self.assertTrue(len(response.context['reviews']) > 0)
+
+    def test_orders_list_view_requires_login(self):
+        response = self.client.get(reverse('orders_list'))
+        self.assertEqual(response.status_code, 302)  # Redirect to login
+
+    def test_orders_list_view_logged_in(self):
+        self.client.login(username='testuser', password='testpass')
+        response = self.client.get(reverse('orders_list'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'core/orders_list.html')
+        self.assertIn('orders', response.context)
+        self.assertTrue(len(response.context['orders']) > 0)
+
+    def test_order_detail_view_requires_login(self):
+        response = self.client.get(reverse('order_detail', args=[self.order.id]))
+        self.assertEqual(response.status_code, 302)  # Redirect to login
+
+    def test_order_detail_view_logged_in(self):
+        self.client.login(username='testuser', password='testpass')
+        response = self.client.get(reverse('order_detail', args=[self.order.id]))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'core/order_detail.html')
+        self.assertIn('order', response.context)
+        self.assertEqual(response.context['order'].id, self.order.id)
+
+    def test_order_detail_view_404(self):
+        self.client.login(username='testuser', password='testpass')
+        response = self.client.get(reverse('order_detail', args=[9999]))
+        self.assertEqual(response.status_code, 404)
