@@ -5,6 +5,30 @@
 {% block content %}
 <div class="container my-5">
     <h1>Список записей</h1>
+
+    <form method="get" class="mb-4">
+        <div class="row g-3 align-items-center">
+            <div class="col-auto">
+                <input type="text" name="q" value="{{ search_query }}" class="form-control" placeholder="Поиск...">
+            </div>
+            <div class="col-auto form-check">
+                <input class="form-check-input" type="checkbox" id="search_name" name="search_name" {% if search_name %}checked{% endif %}>
+                <label class="form-check-label" for="search_name">По имени клиента</label>
+            </div>
+            <div class="col-auto form-check">
+                <input class="form-check-input" type="checkbox" id="search_phone" name="search_phone" {% if search_phone %}checked{% endif %}>
+                <label class="form-check-label" for="search_phone">По телефону</label>
+            </div>
+            <div class="col-auto form-check">
+                <input class="form-check-input" type="checkbox" id="search_comment" name="search_comment" {% if search_comment %}checked{% endif %}>
+                <label class="form-check-label" for="search_comment">По комментарию</label>
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">Поиск</button>
+            </div>
+        </div>
+    </form>
+
     <div class="row">
         {% for order in orders %}
             {% include 'core/includes/order_card.html' %}

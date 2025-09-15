@@ -287,3 +287,44 @@ class ViewTests(TestCase):
         self.client.login(username='testuser', password='testpass')
         response = self.client.get(reverse('order_detail', args=[9999]))
         self.assertEqual(response.status_code, 404)
+
+    def test_orders_list_search_name(self):
+        self.client.login(username='testuser', password='testpass')
+        response = self.client.get(reverse('orders_list'), {'q': 'Клиент', 'search_name': 'on'})
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(all('Клиент' in order.name for order in response.context['orders']))
+
+    def test_orders_list_search_phone(self):
+        self.client.login(username='testuser', password='testpass')
+        response = self.client.get(reverse('orders_list'), {'q': '+70000000001', 'search_phone': 'on'})
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(all('+70000000001' in order.phone for order in response.context['orders']))
+
+    def test_orders_list_search_comment(self):
+        self.client.login(username='testuser', password='testpass')
+        response = self.client.get(reverse('orders_list'), {'q': 'похудеть', 'search_comment': 'on'})
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(all('похудеть' in order.comment for order in response.context['orders']))
+
+    def test_orders_list_search_multiple_fields(self):
+        self.client.login(username='testuser', password='testpass')
+        response = self.client.get(reverse('orders_list'), {
+            'q': 'Клиент',
+            'search_name': 'on',
+            'search_phone': 'on',
+            'search_comment': 'on'
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(len(response.context['orders']) > 0)
+
+    def test_orders_list_search_default_name(self):
+        self.client.login(username='testuser', password='testpass')
+        response = self.client.get(reverse('orders_list'), {'q': 'Клиент'})
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(all('Клиент' in order.name for order in response.context['orders']))
+
+    def test_orders_list_search_empty_query(self):
+        self.client.login(username='testuser', password='testpass')
+        response = self.client.get(reverse('orders_list'), {})
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(len(response.context['orders']) > 0)

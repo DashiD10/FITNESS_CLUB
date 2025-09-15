@@ -23,14 +23,41 @@ def order_detail(request, order_id):
     order = get_object_or_404(Order, pk=order_id)
     return render(request, "core/order_detail.html", {"order": order})
 
+from django.db.models import Q
+
 @login_required
 def orders_list(request):
     """
     Отвечает за маршрут 'orders/'
     :param request: HttpRequest
     """
-    orders = Order.objects.all().order_by('-date_created')
-    return render(request, "core/orders_list.html", {"orders": orders})
+    search_query = request.GET.get('q', '').strip()
+    search_name = request.GET.get('search_name', 'on') == 'on'
+    search_phone = request.GET.get('search_phone') == 'on'
+    search_comment = request.GET.get('search_comment') == 'on'
+
+    orders = Order.objects.all()
+
+    if search_query:
+        q_objects = Q()
+        if search_name:
+            q_objects |= Q(name__icontains=search_query)
+        if search_phone:
+            q_objects |= Q(phone__icontains=search_query)
+        if search_comment:
+            q_objects |= Q(comment__icontains=search_query)
+        orders = orders.filter(q_objects)
+
+    orders = orders.order_by('-date_created')
+
+    context = {
+        'orders': orders,
+        'search_query': search_query,
+        'search_name': search_name,
+        'search_phone': search_phone,
+        'search_comment': search_comment,
+    }
+    return render(request, "core/orders_list.html", context)
 
 def thanks(request):
     return render(request, "core/thanks.html")
