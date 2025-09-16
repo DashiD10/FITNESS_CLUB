@@ -6,7 +6,7 @@ from .models import Trainer, Review, Order
 def landing(request):
     """Обработчик главной страницы"""
     trainers = Trainer.objects.filter(is_active=True)
-    reviews = Review.objects.filter(is_published=True)
+    reviews = Review.objects.filter(is_published=True).select_related('trainer')
     context = {
         'trainers': trainers,
         'reviews': reviews,
@@ -20,7 +20,7 @@ def order_detail(request, order_id):
     :param request: HttpRequest
     :param order_id: int (номер заказа)
     """
-    order = get_object_or_404(Order, pk=order_id)
+    order = get_object_or_404(Order.objects.select_related('trainer').prefetch_related('services'), pk=order_id)
     return render(request, "core/order_detail.html", {"order": order})
 
 from django.db.models import Q
@@ -36,7 +36,7 @@ def orders_list(request):
     search_phone = request.GET.get('search_phone') == 'on'
     search_comment = request.GET.get('search_comment') == 'on'
 
-    orders = Order.objects.all()
+    orders = Order.objects.select_related('trainer').prefetch_related('services').all()
 
     if search_query:
         q_objects = Q()
