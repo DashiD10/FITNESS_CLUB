@@ -20,6 +20,7 @@
                     {% endfor %}
                 </ul>
             </p>
+            <p class="card-text"><strong>Общая стоимость:</strong> {{ order.total_price }} руб</p>
             <p class="card-text"><strong>Тренер:</strong> {{ order.trainer.name if order.trainer else "Не назначен" }}</p>
             <p class="card-text">
                 <strong>Статус:</strong>
