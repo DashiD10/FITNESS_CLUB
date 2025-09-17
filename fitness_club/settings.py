@@ -36,6 +36,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -134,3 +135,42 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 INTERNAL_IPS = ['127.0.0.1',]
+
+# Jazzmin settings
+JAZZMIN_SETTINGS = {
+    "site_title": "Fitness Club Admin",
+    "site_header": "Fitness Club",
+    "site_brand": "Fitness Club",
+    "site_url": "/",
+    "welcome_sign": "Добро пожаловать в админ-панель Fitness Club",
+    "copyright": "Fitness Club",
+    "search_model": "auth.User",
+    "topmenu_links": [
+        {"name": "Главная", "url": "admin:index"},
+        {"name": "Поддержка", "url": "https://github.com/farridav/django-jazzmin", "new_window": True},
+    ],
+    "show_sidebar": True,
+    "navigation_expanded": False,
+    "hide_apps": [],
+    "hide_models": [],
+    "order_with_respect_to": ["core", "auth"],
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user",
+        "auth.Group": "fas fa-users",
+        "core.service": "fas fa-dumbbell",
+        "core.trainer": "fas fa-user-tie",
+        "core.order": "fas fa-shopping-cart",
+        "core.review": "fas fa-star",
+    },
+    "default_icon_parents": "fas fa-chevron-circle-right",
+    "default_icon_children": "fas fa-circle",
+    "related_modal_active": False,
+    "custom_css": None,
+    "custom_js": None,
+    "use_google_fonts_cdn": True,
+    "show_ui_builder": False,
+    "changeform_format": "horizontal_tabs",
+    "changeform_format_overrides": {},
+    "language_chooser": False,
+}
