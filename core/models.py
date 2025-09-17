@@ -4,6 +4,7 @@ from typing import Optional
 STATUS_CHOICES = [
     ('not_approved', 'Не одобрен'),
     ('approved', 'Одобрен'),
+    ('in_progress', 'В работе'),
     ('completed', 'Завершен'),
     ('cancelled', 'Отменен'),
 ]
