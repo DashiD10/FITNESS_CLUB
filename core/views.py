@@ -2,7 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Sum
+from django.http import JsonResponse
 from .models import Trainer, Review, Order
+from .forms import ReviewForm, OrderForm
 
 def landing(request):
     """Обработчик главной страницы"""
@@ -62,3 +64,31 @@ def orders_list(request):
 
 def thanks(request):
     return render(request, "core/thanks.html")
+
+def create_review(request):
+    if request.method == 'POST':
+        form = ReviewForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('thanks')
+    else:
+        form = ReviewForm()
+    return render(request, 'core/create_review.html', {'form': form})
+
+def create_order(request):
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('thanks')
+    else:
+        form = OrderForm()
+    return render(request, 'core/create_order.html', {'form': form})
+
+def get_trainer_services(request, trainer_id):
+    try:
+        trainer = Trainer.objects.get(id=trainer_id)
+        services = list(trainer.services.values('id', 'name'))
+        return JsonResponse({'services': services})
+    except Trainer.DoesNotExist:
+        return JsonResponse({'error': 'Trainer not found'}, status=404)
