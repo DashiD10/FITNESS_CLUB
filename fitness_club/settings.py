@@ -141,7 +141,7 @@ JAZZMIN_SETTINGS = {
     "site_title": "Fitness Club Admin",
     "site_header": "Fitness Club",
     "site_brand": "Fitness Club",
-    "site_url": "/",
+    "site_url": "http://127.0.0.1:8000/",
     "welcome_sign": "Добро пожаловать в админ-панель Fitness Club",
     "copyright": "Fitness Club",
     "search_model": "auth.User",
