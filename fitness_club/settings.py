@@ -27,6 +27,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 MISTRAL_API_KEY = os.getenv('MISTRAL_API_KEY')
 
+# Telegram settings
+TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
