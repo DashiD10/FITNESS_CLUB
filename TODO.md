@@ -1,13 +1,22 @@
-# TODO: Telegram Notifications for New Orders
+# Рефакторинг представлений Django: FBV → CBV
 
-## Completed Tasks
-- [x] Analyze project structure and models
-- [x] Understand Order model (name, phone, trainer, services M2M, appointment_date)
-- [x] Create core/telegram.py with send_telegram_message function
-- [x] Create core/signals.py with m2m_changed handler for Order.services
-- [x] Update fitness_club/settings.py to add TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID
-- [x] Update core/apps.py to import signals in ready()
-- [x] Update .env.example to include TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID (assumed done by user)
+## План выполнения
 
-## Pending Tasks
-- [x] Test the notification by creating a new order (confirmed working by user)
+### Часть 1: Простые представления (TemplateView)
+- [ ] Создать `LandingView` (TemplateView) с передачей тренеров и отзывов в контекст
+- [ ] Создать `ThanksView` (TemplateView)
+
+### Часть 2: ListView и DetailView
+- [ ] Создать `OrdersListView` (ListView) с логикой поиска в `get_queryset`
+- [ ] Создать `OrderDetailView` (DetailView)
+
+### Часть 3: CreateView
+- [ ] Создать `ReviewCreateView` (CreateView) с flash-сообщением в `form_valid`
+- [ ] Создать `OrderCreateView` (CreateView) с flash-сообщением в `form_valid`
+
+### Часть 4: Обновление URLs
+- [ ] Обновить `fitness_club/urls.py` для использования `.as_view()`
+
+### Часть 5: Тестирование
+- [ ] Проверить запуск проекта
+- [ ] Проверить работу всех маршрутов
