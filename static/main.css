@@ -53,11 +53,37 @@ footer {
 }
 
 .btn-primary:hover {
-    color: #fff;
+    color: #e2dddd;
     background-color: #0b5ed7;
     border-color: #0a58ca;
 }
 
 .d-grid .btn {
     width: 100%;
+}
+
+/* Custom hover effect for the booking button */
+.btn-secondary {
+    background-color: #6c757d !important;
+    border-color: #6c757d !important;
+    color: #fff !important;
+}
+
+.btn-secondary:hover {
+    background-color: #28a745 !important;
+    border-color: #28a745 !important;
+    color: #fff !important;
+}
+
+/* Стили для кнопки выхода */
+.navbar-nav .btn-outline-light[type="submit"] {
+    background-color: #d3d3d3 !important; /* Светло-серый цвет */
+    border-color: #d3d3d3 !important;
+    color: #333 !important;
+}
+
+.navbar-nav .btn-outline-light[type="submit"]:hover {
+    background-color: #ffffff !important; /* Белый цвет при наведении */
+    border-color: #ffffff !important;
+    color: #333 !important;
 }
