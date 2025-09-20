@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum
 from django.http import JsonResponse
 from django.views.generic import TemplateView, ListView, DetailView, CreateView
@@ -29,7 +30,7 @@ def order_detail(request, order_id):
     return render(request, "core/order_detail.html", {"order": order})
 
 
-class OrderDetailView(DetailView):
+class OrderDetailView(LoginRequiredMixin, DetailView):
     """Классовое представление для детальной информации о заявке"""
     model = Order
     template_name = 'core/order_detail.html'
@@ -76,7 +77,7 @@ def orders_list(request):
     return render(request, "core/orders_list.html", context)
 
 
-class OrdersListView(ListView):
+class OrdersListView(LoginRequiredMixin, ListView):
     """Классовое представление для списка заявок с поиском"""
     model = Order
     template_name = 'core/orders_list.html'

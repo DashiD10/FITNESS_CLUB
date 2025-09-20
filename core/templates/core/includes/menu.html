@@ -5,11 +5,31 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
+            <ul class="navbar-nav me-auto">
                 {% for link in menu_links %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url link.url_name %}{{ link.anchor }}">{{ link.label }}</a>
                 </li>
+                {% endfor %}
+            </ul>
+            <ul class="navbar-nav">
+                {% for item in user_menu %}
+                    {% if item.is_username %}
+                        <li class="nav-item">
+                            <span class="navbar-text text-light">{{ item.label }}</span>
+                        </li>
+                    {% elif item.is_logout %}
+                        <li class="nav-item">
+                            <form id="{{ item.form_id }}" method="post" action="{% url 'users:logout' %}" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-light btn-sm ms-2">{{ item.label }}</button>
+                            </form>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url item.url %}">{{ item.label }}</a>
+                        </li>
+                    {% endif %}
                 {% endfor %}
             </ul>
         </div>

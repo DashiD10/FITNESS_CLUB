@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'debug_toolbar',
     'core',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -76,6 +77,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'core.context_processors.menu_links',
+                'core.context_processors.auth_menu',
             ],
         },
     },
@@ -139,6 +141,11 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 INTERNAL_IPS = ['127.0.0.1',]
+
+# Authentication settings
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 # Jazzmin settings
 JAZZMIN_SETTINGS = {

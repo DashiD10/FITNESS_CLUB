@@ -16,5 +16,6 @@ urlpatterns = [
     path('orders/create/', OrderCreateView.as_view(), name='create_order'),
     path('api/trainer/<int:trainer_id>/services/', get_trainer_services, name='get_trainer_services'),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('users/', include('users.urls')),
     path('__debug__/', include('debug_toolbar.urls')),
 ]
